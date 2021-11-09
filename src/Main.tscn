@@ -1,0 +1,198 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/Canvas/CanvasNode.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/Label.gd" type="Script" id=2]
+[ext_resource path="res://src/Canvas/Cursor.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/Main.gd" type="Script" id=4]
+[ext_resource path="res://src/cursor_trail.gd" type="Script" id=5]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 300.0
+margin_bottom = 300.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Toolbar" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 20.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Toolbar"]
+margin_right = 300.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MenuButton" type="MenuButton" parent="MarginContainer/VBoxContainer/Toolbar/HBoxContainer"]
+margin_right = 35.0
+margin_bottom = 20.0
+text = "File"
+
+[node name="MenuButton2" type="MenuButton" parent="MarginContainer/VBoxContainer/Toolbar/HBoxContainer"]
+margin_left = 39.0
+margin_right = 85.0
+margin_bottom = 20.0
+focus_mode = 2
+text = "Tools"
+
+[node name="MenuButton3" type="MenuButton" parent="MarginContainer/VBoxContainer/Toolbar/HBoxContainer"]
+margin_left = 89.0
+margin_right = 132.0
+margin_bottom = 20.0
+focus_mode = 2
+text = "Pens"
+
+[node name="MenuButton4" type="MenuButton" parent="MarginContainer/VBoxContainer/Toolbar/HBoxContainer"]
+margin_left = 136.0
+margin_right = 199.0
+margin_bottom = 20.0
+focus_mode = 2
+text = "Options"
+
+[node name="MenuButton5" type="MenuButton" parent="MarginContainer/VBoxContainer/Toolbar/HBoxContainer"]
+margin_left = 203.0
+margin_right = 244.0
+margin_bottom = 20.0
+focus_mode = 2
+text = "view"
+
+[node name="WorkArea" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 300.0
+margin_bottom = 300.0
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/WorkArea"]
+margin_right = 300.0
+margin_bottom = 276.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer"]
+margin_bottom = 276.0
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer"]
+margin_bottom = 276.0
+size_flags_vertical = 3
+
+[node name="Tree" type="Tree" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer/Panel"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer"]
+margin_left = 4.0
+margin_right = 300.0
+margin_bottom = 276.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel2" type="Panel" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2"]
+margin_right = 296.0
+margin_bottom = 276.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer"]
+margin_right = 296.0
+margin_bottom = 241.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DrawViewport" type="ViewportContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer"]
+margin_right = 280.0
+margin_bottom = 225.0
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport"]
+size = Vector2( 280, 225 )
+size_override_stretch = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="CanvasNode" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport" instance=ExtResource( 1 )]
+
+[node name="Cursor" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport" instance=ExtResource( 3 )]
+cursor_settings = {
+"border_alpha": 0.5,
+"border_color": Color( 0.6, 0.8, 0.2, 1 ),
+"border_width": 3,
+"dot_alpha": 0.5,
+"dot_color": Color( 0, 0, 0, 1 ),
+"dot_size": 5,
+"draw_border": true,
+"draw_dot": true,
+"fill_alpha": 0.3,
+"fill_color": Color( 0.6, 0.8, 0.2, 1 ),
+"size": 50.0,
+"type": "circle"
+}
+
+[node name="Line2D" type="Line2D" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport/Cursor"]
+width = 2.0
+default_color = Color( 0, 0, 0, 0.501961 )
+script = ExtResource( 5 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer"]
+margin_top = 245.0
+margin_right = 296.0
+margin_bottom = 276.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/HBoxContainer"]
+margin_right = 172.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/HBoxContainer"]
+margin_left = 176.0
+margin_right = 296.0
+margin_bottom = 31.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/HBoxContainer/MarginContainer2"]
+margin_right = 120.0
+margin_bottom = 31.0
+text = "Messages Go Here
+"
+valign = 2
+script = ExtResource( 2 )
+
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport" to="." method="_on_DrawViewport_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport" to="." method="_on_DrawViewport_mouse_exited"]
