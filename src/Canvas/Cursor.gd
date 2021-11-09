@@ -74,7 +74,7 @@ func _draw_circle_cursor():
 func set_cursor(special:bool):
 	if special:
 		self.visible = true
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	else:
 		self.visible = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
