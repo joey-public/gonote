@@ -171,6 +171,9 @@ width = 2.0
 default_color = Color( 0, 0, 0, 0.501961 )
 script = ExtResource( 5 )
 
+[node name="Timer" type="Timer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport/Cursor"]
+wait_time = 0.002
+
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer"]
 margin_top = 245.0
 margin_right = 296.0
@@ -196,3 +199,4 @@ script = ExtResource( 2 )
 
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport" to="." method="_on_DrawViewport_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport" to="." method="_on_DrawViewport_mouse_exited"]
+[connection signal="timeout" from="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport/Cursor/Timer" to="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport/Cursor" method="_on_Timer_timeout"]

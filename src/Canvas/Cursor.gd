@@ -18,12 +18,14 @@ export var cursor_settings:Dictionary ={
 }
 var cursor = "circle"
 var scribble = NAN
+var scribble_points:PoolVector2Array
 var canvas = NAN
 var cursors:Dictionary = {
 	"circle":funcref(self,"_draw_circle_cursor")
 }
 
 onready var pos = self.get_global_mouse_position()
+onready var sampler = $Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,19 +33,29 @@ func _ready():
 	self.canvas = self.get_parent().get_node("CanvasNode")
 	self.canvas.add_child(self.scribble)
 
+func _input(event):
+	if event.is_action_pressed("draw"):
+		self.sampler.start()
+	if event.is_action_released("draw"):
+		self.sampler.stop()
+		self.scribble = Scribble.instance()
+		self.canvas.add_child(self.scribble)
+		
+		
+
 func _process(_delta):
 	if self.visible: 
 		self.position = self.get_global_mouse_position()
 		self.update()
-		if Input.is_action_pressed("draw"):
-			self.scribble.add_point(self.position)
-		elif Input.is_action_just_released("draw"):
-			print(self.pos)
-			print(self.position)
-			print(self.get_global_mouse_position())
-			print(self.get_local_mouse_position())
-			self.scribble = Scribble.instance()
-			self.canvas.add_child(self.scribble)
+#		if Input.is_action_pressed("draw"):
+#			self.scribble.add_point(self.position)
+#		elif Input.is_action_just_released("draw"):
+#			print(self.pos)
+#			print(self.position)
+#			print(self.get_global_mouse_position())
+#			print(self.get_local_mouse_position())
+#			self.scribble = Scribble.instance()
+#			self.canvas.add_child(self.scribble)
 			
 			
 
@@ -74,7 +86,11 @@ func _draw_circle_cursor():
 func set_cursor(special:bool):
 	if special:
 		self.visible = true
-		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		self.visible = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+func _on_Timer_timeout():
+	self.scribble.add_point(self.position)
