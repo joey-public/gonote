@@ -1,7 +1,7 @@
 extends Node
 
 const refresh_rates:Dictionary = {
-	"draw_rate": 90,
+	"draw_rate": 30,
 	"pan_rate":60,
 	"slow_rate":30,
 }
