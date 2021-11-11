@@ -4,7 +4,7 @@
 [ext_resource path="res://src/Label.gd" type="Script" id=2]
 [ext_resource path="res://src/Canvas/Cursor.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/Main.gd" type="Script" id=4]
-[ext_resource path="res://src/cursor_trail.gd" type="Script" id=5]
+[ext_resource path="res://trail.tscn" type="PackedScene" id=5]
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -168,10 +168,8 @@ cursor_settings = {
 "type": "circle"
 }
 
-[node name="Line2D" type="Line2D" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport/CanvasLayer/Cursor"]
-points = PoolVector2Array( 516, 79 )
-default_color = Color( 0.882353, 0.815686, 0.0901961, 0.537255 )
-script = ExtResource( 5 )
+[node name="Line2D" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer/Panel/MarginContainer/DrawViewport/Viewport/CanvasLayer/Cursor" instance=ExtResource( 5 )]
+visible = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/WorkArea/HBoxContainer/MarginContainer2/Panel2/VBoxContainer"]
 margin_top = 245.0

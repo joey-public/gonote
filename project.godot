@@ -33,6 +33,7 @@ SignalManager="*res://src/Singletons/SignalManager.tscn"
 
 window/size/width=300
 window/size/height=300
+window/vsync/use_vsync=false
 
 [input]
 
