@@ -1,7 +1,7 @@
 image: barichello/godot-ci:3.4
 
 variables:
-  EXPORT_NAME:gonote
+  EXPORT_NAME: gonote
 
 stages:
   -export 
