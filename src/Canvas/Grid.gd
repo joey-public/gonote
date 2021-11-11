@@ -96,7 +96,7 @@ func _draw_grid(size:Vector2)->void:
 	print(size)
 
 
-func _darw_eng_grid(size:Vector2)->void:
+func _darw_eng_grid(_size:Vector2)->void:
 	pass
 
 
@@ -105,11 +105,11 @@ func _draw_dot_line_grid(size:Vector2)->void:
 	self._draw_grid(size)
 
 
-func _draw_hline_grid(size:Vector2)->void:
+func _draw_hline_grid(_size:Vector2)->void:
 	pass
 
 
-func _draw_vline_grid(size:Vector2)->void:
+func _draw_vline_grid(_size:Vector2)->void:
 	pass
 	
 

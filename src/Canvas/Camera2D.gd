@@ -10,7 +10,7 @@ var _pan_start:Vector2
 func _ready():
 	pass # Replace with function body.
 
-func _input(event):
+func _input(_event):
 	pass
 #	if event.is_action_pressed("zoom_in"):
 #		self.zoom -= self.zoom/10

@@ -1,6 +1,6 @@
 extends Node2D
 
-const Scribble = preload("res://src/Draw/Scribble.tscn")
+#const Scribble = preload("res://src/Draw/Scribble.tscn")
 
 export var cursor_settings:Dictionary ={
 	"type":"circle",
@@ -17,29 +17,30 @@ export var cursor_settings:Dictionary ={
 	"draw_dot":true,
 }
 var cursor = "circle"
-var scribble = NAN
-var scribble_points:PoolVector2Array
-var canvas = NAN
+#var scribble = NAN
+#var scribble_points:PoolVector2Array
+#var canvas = NAN
 var cursors:Dictionary = {
 	"circle":funcref(self,"_draw_circle_cursor")
 }
 
 onready var pos = self.get_global_mouse_position()
-onready var sampler = $Timer
+#onready var sampler = $Timer
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.scribble = Scribble.instance()
-	self.canvas = self.get_parent().get_node("CanvasNode")
-	self.canvas.add_child(self.scribble)
+## Called when the node enters the scene tree for the first time.
+#func _ready():
+#	self.scribble = Scribble.instance()
+##	self.canvas = self.get_parent().get_node("CanvasNode")
+#	self.canvas = self.get_parent().get_parent().get_node("CanvasNode")
+#	self.canvas.add_child(self.scribble)
 
-func _input(event):
-	if event.is_action_pressed("draw"):
-		self.sampler.start()
-	if event.is_action_released("draw"):
-		self.sampler.stop()
-		self.scribble = Scribble.instance()
-		self.canvas.add_child(self.scribble)
+#func _input(event):
+#	if event.is_action_pressed("draw"):
+#		self.sampler.start()
+#	if event.is_action_released("draw"):
+#		self.sampler.stop()
+#		self.scribble = Scribble.instance()
+#		self.canvas.add_child(self.scribble)
 		
 		
 
