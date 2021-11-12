@@ -5,8 +5,9 @@ export var width:float = 1
 export var anti_a:bool = true
 
 export var trail_off_speed:int = 50#ponts per sec
-
+export var note_dir:String = "Notes/"
 var scribble_points:Array = []
+var undo_stack:Array = []
 var draw_stack:Array = []
 var drawing_time:float=0
 
@@ -14,6 +15,15 @@ onready var pos = self.get_global_mouse_position()
 onready var trail = $Line2D
 onready var tween = $Tween
 
+func _input(event):
+	if event.is_action_pressed("undo"):
+		if self.draw_stack.size()>0:
+			self.undo_stack.push_back(self.draw_stack.pop_back())
+			self.update()
+	if event.is_action_pressed("redo"):
+		if self.undo_stack.size()>0:
+			self.draw_stack.push_back(self.undo_stack.pop_back())
+			self.update()
 
 func _process(delta):
 	if self.visible: 
@@ -30,6 +40,7 @@ func _process(delta):
 			SignalManager.emit_signal("fps_changed",
 									   Globals.refresh_rates["slow_rate"])
 			self.draw_stack.push_back(PoolVector2Array(self.scribble_points))
+#			self._save_to_png(self.scribble_points)
 			self.scribble_points.clear()
 		else:
 			self._remove_trail_point(0)
@@ -58,3 +69,35 @@ func _remove_trail_point(mpos:int)->void:
 #add to a StreamTexture object
 func _batch_lines_to_texture():
 	pass
+
+
+func _save_to_png(scrib:PoolVector2Array):
+	var patch:Rect2 = self._get_scribble_rect(scrib)
+	print(patch.size)
+	var i:Image= Image.new()
+	i.create(patch.size.x,patch.size.y,false,Image.FORMAT_RGBA8)
+	i = self._fill_image(scrib,i)
+#	i.save_png("scribble.png")
+	print("saved!")
+	
+
+func _fill_image(scrib:PoolVector2Array,image:Image)->Image:
+	image.lock()
+	image.decompress()
+	for x in image.get_width():
+		for y in image.get_height():
+			if Vector2(x,y) in scrib:
+				image.set_pixel(x,y,Color.black)
+			else:
+				image.set_pixel(x,y,Color.white)
+	return image
+
+func _get_scribble_rect(scrib)->Rect2:
+	var upper_right = Vector2.ZERO
+	var lower_left = Vector2.ZERO
+	for point in scrib:
+		upper_right.x = min(point.x, upper_right.x)
+		upper_right.y = min(point.y, upper_right.y)
+		lower_left.x = max(point.x, lower_left.x)
+		lower_left.y = max(point.y, lower_left.y)
+	return Rect2(upper_right,lower_left-upper_right)
