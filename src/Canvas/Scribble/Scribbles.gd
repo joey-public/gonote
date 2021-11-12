@@ -4,6 +4,8 @@ export var color:Color = Color.black
 export var width:float = 1
 export var anti_a:bool = true
 
+export var trail_off_speed:int = 50#ponts per sec
+
 var scribble_points:Array = []
 var draw_stack:Array = []
 var drawing_time:float=0
@@ -29,8 +31,11 @@ func _process(delta):
 									   Globals.refresh_rates["slow_rate"])
 			self.draw_stack.push_back(PoolVector2Array(self.scribble_points))
 			self.scribble_points.clear()
+		else:
+			self._remove_trail_point(0)
+#			var time = self.trail.get_point_count() / self.trail_off_speed;
 #			self.tween.interpolate_method(self,"_remove_trail_point",0,0,
-#										self.drawing_time+1,Tween.TRANS_EXPO,Tween.EASE_IN)
+#										time+1,Tween.TRANS_EXPO,Tween.EASE_IN)
 #			self.tween.start()
 
 #interpolate_method
@@ -45,9 +50,9 @@ func _clear_trail_points()->void:
 	if self.trail.get_point_count() > 0:
 		self.trail.clear_points()
 
-func _remove_trail_point(pos:int)->void:
+func _remove_trail_point(mpos:int)->void:
 	if self.trail.get_point_count() >0:
-		self.trail.remove_point(pos)
+		self.trail.remove_point(mpos)
 ##TODO
 #to reduce draw calls remove items from the draw stack and instead 
 #add to a StreamTexture object

@@ -4,8 +4,8 @@ const sixty_fps:float = 1/60.0;
 
 export var max_zoom = 0.1
 export var min_zoom = 5
-export var scroll_speed:float = 500.0
-export var zoom_speed:float = 200
+export var scroll_speed:float = 250.0
+export var zoom_speed:float = 250
 
 var _pan_start:Vector2
 # Called when the node enters the scene tree for the first time.
