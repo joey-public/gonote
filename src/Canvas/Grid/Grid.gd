@@ -1,17 +1,17 @@
 extends Node2D
 
-export var selected_grid:String = "line"
 export var grid_size:int = 32
 export var fixed_canvans = false
 export var canvas_dim:Vector2=Vector2.ZERO
 
-export var grids:Dictionary = {
+var selected_grid:String = "line"
+var grids:Dictionary = {
 	"dot":funcref(self,"_draw_dot_grid"),
 	"line":funcref(self,"_draw_grid"),
 	"engineer":funcref(self,"_draw_eng_grid"),
-	"dot_line":funcref(self,"_draw_dot_line_grid"),
-	"hline":funcref(self,"_draw_dot_line_grid"),
-	"vline":funcref(self,"_draw_dot_line_grid"),
+#	"dot_line":funcref(self,"_draw_dot_line_grid"),
+#	"hline":funcref(self,"_draw_dot_line_grid"),
+#	"vline":funcref(self,"_draw_dot_line_grid"),
 }
 
 export var dot_grid_settings:Dictionary = {
@@ -36,10 +36,10 @@ export var eng_grid_settings:Dictionary = {
 var spacing:Vector2
 var line_count:Vector2
 
-func _ready():
-	self._set_canvas_dim()
-	self._set_line_count()
-	self.spacing = self.grid_size*Vector2(1,1)
+#func _ready():
+#	self._set_canvas_dim()
+#	self._set_line_count()
+#	self.spacing = self.grid_size*Vector2(1,1)
 
 
 func _process(_delta):
@@ -52,7 +52,11 @@ func _process(_delta):
 
 
 func _draw()->void:
+	self._set_canvas_dim()
+	self._set_line_count()
+	self.spacing = self.grid_size*Vector2(1,1)
 	self.grids[self.selected_grid].call_func(self.line_count)
+	print(self.canvas_dim)
 	print("done_drawing grid")
 
 
@@ -72,10 +76,6 @@ func _draw_dot_grid(size:Vector2)->void:
 		pos.x = -self.spacing.x/2
 		pos.y += self.spacing.y
 		x=r
-	print(x)
-	print(y)
-	print(x*y)
-	print(size)
 
 func _draw_grid(size:Vector2)->void:
 	var lw:float = self.line_grid_settings["line_width"]
@@ -100,9 +100,9 @@ func _darw_eng_grid(_size:Vector2)->void:
 	pass
 
 
-func _draw_dot_line_grid(size:Vector2)->void:
-	self._draw_dot_grid(size)
-	self._draw_grid(size)
+#func _draw_dot_line_grid(size:Vector2)->void:
+#	self._draw_dot_grid(size)
+#	self._draw_grid(size)
 
 
 func _draw_hline_grid(_size:Vector2)->void:

@@ -47,7 +47,7 @@ func _process(delta):
 		self.offset.x += self.scroll_speed*delta
 	elif Input.is_action_pressed("pan_up"):
 		self.offset.y -= self.scroll_speed*delta
-	elif Input.is_action_pressed("pan_down"):
+	elif Input.is_action_pressed("pan_down") and not Input.is_action_pressed("save"):
 		self.offset.y += self.scroll_speed*delta
 
 
