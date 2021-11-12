@@ -37,6 +37,7 @@ func _process(delta):
 			self.update()
 			self.drawing_time += delta
 		elif Input.is_action_just_released("draw"):
+			print("draw done")
 			SignalManager.emit_signal("fps_changed",
 									   Globals.refresh_rates["slow_rate"])
 			self.draw_stack.push_back(PoolVector2Array(self.scribble_points))

@@ -30,6 +30,7 @@ func _ready():
 	$Viewport/Grid.canvas_dim = self.page_rect.size
 	$Viewport/Grid.update()
 	$Sprite.position= Vector2(border_rect.size.x,0)
+	self.save_page()
 	
 
 func _input(event):
@@ -37,7 +38,18 @@ func _input(event):
 		self.save_page()
 		
 #func _process(_delta):
-#	self.save_page()
+#	$Viewport.set_clear_mode(Viewport.CLEAR_MODE_ONLY_NEXT_FRAME)
+##	self._update_children($Viewport)
+#	yield(VisualServer,"frame_post_draw")
+#	var img:Image = $Viewport.get_texture().get_data()
+#	img.lock()
+#	img.flip_y()
+#	img.save_png("test.png")
+#	var tex = ImageTexture.new()
+#	tex.create_from_image(img)
+#	self.texture = tex
+#	$Viewport.set_clear_mode(Viewport.CLEAR_MODE_ALWAYS)
+
 
 func _draw():
 #	draw_rect(page_rect,Color.antiquewhite,true)
@@ -47,21 +59,23 @@ func _draw():
 
 func save_page():
 	var tempz = $Viewport/Camera2D.zoom
-#	var tempo = $Viewport/Camera2D.offset
+	var tempo = $Viewport/Camera2D.offset
 	$Viewport/Camera2D.zoom = Vector2(1,1)
-#	$Viewport/Camera2D.offset = Vector2.ZERO
+	$Viewport/Camera2D.offset = Vector2.ZERO
 	$Viewport.set_clear_mode(Viewport.CLEAR_MODE_ONLY_NEXT_FRAME)
 #	self._update_children($Viewport)
 	yield(VisualServer,"frame_post_draw")
 	var img:Image = $Viewport.get_texture().get_data()
 	img.lock()
 	img.flip_y()
-#	img.save_png("test.png")
+	img.save_png("test.png")
 	var tex = ImageTexture.new()
 	tex.create_from_image(img)
 	$Sprite.texture = tex
 	$Viewport/Camera2D.zoom = tempz
-#	$Viewport/Camera2D.offset = tempo
+	$Viewport/Camera2D.offset = tempo
+	$Viewport.set_clear_mode(Viewport.CLEAR_MODE_ALWAYS)
+
 #	self.set_process(true)
 
 func _update_children(parent:Node):
