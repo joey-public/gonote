@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - github_pages 
+      - master 
 
 jobs:
   deploy:
