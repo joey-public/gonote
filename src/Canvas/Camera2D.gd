@@ -7,10 +7,11 @@ export var min_zoom = 3
 export var scroll_speed:float = 150.0
 export var zoom_speed:float = 200
 
+var _pan_limits:Vector2
 var _pan_start:Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
 
 func _input(_event):
 	pass

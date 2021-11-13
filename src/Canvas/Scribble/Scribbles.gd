@@ -10,10 +10,12 @@ var scribble_points:Array = []
 var undo_stack:Array = []
 var draw_stack:Array = []
 var drawing_time:float=0
+var can_draw = true
 
 onready var pos = self.get_global_mouse_position()
 onready var trail = $Line2D
 onready var tween = $Tween
+
 
 func _input(event):
 	if event.is_action_pressed("undo"):
@@ -30,6 +32,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("draw"):
 			self._clear_trail_points()
 		elif Input.is_action_pressed("draw"):
+			if not(self._can_draw()): return 
 			SignalManager.emit_signal("fps_changed",
 									   Globals.refresh_rates["draw_rate"])
 			self.scribble_points.append(get_global_mouse_position())
@@ -51,12 +54,15 @@ func _process(delta):
 #			self.tween.start()
 
 #interpolate_method
+#func _draw():
+#	self.draw_circle(get_global_mouse_position(),5,Color.black)
 func _draw():
 	if self.scribble_points.size() > 2:
 		self.draw_polyline(self.scribble_points,self.color,self.width,self.anti_a)
 	for scribble in self.draw_stack:
 		if scribble.size() >2:
 			self.draw_polyline(scribble,self.color,self.width,self.anti_a)
+
 
 func _clear_trail_points()->void:
 	if self.trail.get_point_count() > 0:
@@ -102,3 +108,8 @@ func _get_scribble_rect(scrib)->Rect2:
 		lower_left.x = max(point.x, lower_left.x)
 		lower_left.y = max(point.y, lower_left.y)
 	return Rect2(upper_right,lower_left-upper_right)
+
+func _can_draw():
+	var pos:Vector2 = get_global_mouse_position()
+	var rec:Rect2 = get_parent().get_global_rect()
+	return rec.has_point(pos)

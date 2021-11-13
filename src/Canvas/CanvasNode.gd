@@ -3,12 +3,15 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Camera2D.offset=$Page.size/2
+	pass
+#	self._center_page()
 
 
 func _input(event):
 	if event.is_action_pressed("save"):
 		self.save_page()
+	if event.is_action_pressed("fit"):
+		self._center_page()
 
 
 func save_page():
@@ -21,8 +24,28 @@ func save_page():
 	var img:Image = viewport.get_texture().get_data()
 	img.flip_y()
 	img.crop($Page.size.x,$Page.size.y)
-#	img.save_png("test.png")
-	var tex = ImageTexture.new()
-	tex.create_from_image(img)
-	$Page/Sprite.texture = tex
+	img.save_png("test.png")
+#	var tex = ImageTexture.new()
+#	tex.create_from_image(img)
+#	$Page/Sprite.texture = tex
 	viewport.set_clear_mode(Viewport.CLEAR_MODE_ALWAYS)
+
+
+func _center_page():
+	var pg_rec:Rect2 = $Page.page_rect
+	print(pg_rec)
+	var vp_rec:Rect2 = self.get_viewport_rect()
+	print(vp_rec)
+	var ofst:Vector2 = -0.5*(vp_rec.size-pg_rec.size)
+	if $Camera2D.offset != ofst:
+		$Camera2D/offset_tween.interpolate_property($Camera2D,"offset",$Camera2D.offset,ofst, 0.5,
+												Tween.TRANS_EXPO,Tween.EASE_IN)
+		$Camera2D/offset_tween.start()
+	if $Camera2D.zoom != Vector2(1,1):
+		$Camera2D/zoom_tween.interpolate_property($Camera2D,"zoom",$Camera2D.zoom,Vector2(1,1), 0.5,
+												Tween.TRANS_EXPO,Tween.EASE_IN)
+		$Camera2D/zoom_tween.start()
+#	$Camera2D.zoom = Vector2(1,1)
+#	$Camera2D.offset = ofst
+	
+	
