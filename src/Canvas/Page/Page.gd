@@ -1,5 +1,8 @@
 extends Node2D
 
+var Scribbles = preload("res://src/Canvas/Scribble/Scribbles.tscn")
+var Grid = preload("res://src/Canvas/Grid/Grid.tscn")
+
 export var size = "A4"
 export var page_color = Color.antiquewhite
 var sizes ={
@@ -15,6 +18,8 @@ onready var page_rect = Rect2(Vector2.ZERO,self.sizes[self.size])
 onready var border_rect = Rect2(Vector2(-1,-1)*self.border_width/2.0,
 						page_rect.size+Vector2(1,1)*self.border_width)
 # Called when the node enters the scene tree for the first time.
+onready var scribbles = $Sprite2/Scribbles
+onready var Grid2 = $Sprite2/Grid2
 func _ready():
 #	$Viewport.size = self.page_rect.size
 #	print($Viewport.size)
@@ -26,11 +31,6 @@ func _ready():
 	var tex := ImageTexture.new()
 	tex.create_from_image(img)
 	self.sprite.texture = tex
-	
-
-func _input(event):
-	if event.is_action_pressed("save"):
-		self.save_page()
 
 
 func _draw():
@@ -39,30 +39,9 @@ func _draw():
 		draw_rect(self.border_rect,self.border_color,false,self.border_width)
 
 
-func save_page():
-#	self.set_process(false)
-	var save_viewport := Viewport.new()
-	save_viewport.name = "SaveViewport"
-	save_viewport.size = self.page_rect.size
-	save_viewport.own_world = true
-#	save_viewport.transparent_bg = true
-	save_viewport.usage = Viewport.USAGE_2D
-	self.add_child(save_viewport)
-	$SaveViewport.add_child(self.sprite.duplicate())
-	print($SaveViewport.get_children())
-	$SaveViewport.set_clear_mode(Viewport.CLEAR_MODE_ONLY_NEXT_FRAME)
-	self._update_children($SaveViewport)
-	yield(VisualServer,"frame_post_draw")
-	var img:Image = $SaveViewport.get_texture().get_data()
-	img.flip_y()
-#	img.save_png("test.png")
-	var tex = ImageTexture.new()
-	tex.create_from_image(img)
-	$Sprite.texture = tex
-#	self.set_process(true)
-
 func _update_children(parent:Node):
 	for child in parent.get_children():
 		if child is CanvasItem:
+			print(child)
 			child.update()
 			self._update_children(child)

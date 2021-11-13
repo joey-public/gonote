@@ -7,6 +7,8 @@
 [ext_resource path="res://src/UI/Label.gd" type="Script" id=5]
 
 [node name="Page2" type="ViewportContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -18,7 +20,7 @@ handle_input_locally = false
 usage = 0
 render_target_update_mode = 3
 
-[node name="Sprite" type="Sprite" parent="Viewport"]
+[node name="Sprite2" type="Sprite" parent="Viewport"]
 centered = false
 
 [node name="Scribbles" parent="Viewport" instance=ExtResource( 2 )]
