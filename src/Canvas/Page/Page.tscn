@@ -47,7 +47,3 @@ eng_grid_settings = {
 }
 
 [node name="Scribbles" parent="Sprite2" instance=ExtResource( 1 )]
-
-[node name="Sprite" type="Sprite" parent="."]
-centered = false
-offset = Vector2( 800, 0 )

@@ -2,7 +2,7 @@ extends Camera2D
 
 const sixty_fps:float = 1/60.0;
 
-export var max_zoom = 0.25
+export var max_zoom = 0.15
 export var min_zoom = 3
 export var scroll_speed:float = 150.0
 export var zoom_speed:float = 200

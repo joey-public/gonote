@@ -17,18 +17,19 @@ func _input(event):
 func save_page():
 	$Camera2D.zoom = Vector2(1,1)
 	$Camera2D.offset=Vector2.ZERO
-
 	var viewport = self.get_viewport()
 	viewport.set_clear_mode(Viewport.CLEAR_MODE_ONLY_NEXT_FRAME)
 	yield(VisualServer,"frame_post_draw")
 	var img:Image = viewport.get_texture().get_data()
 	img.flip_y()
 	img.crop($Page.size.x,$Page.size.y)
-	img.save_png("test.png")
+	img.decompress()
+	img.lock()
 #	var tex = ImageTexture.new()
 #	tex.create_from_image(img)
 #	$Page/Sprite.texture = tex
 	viewport.set_clear_mode(Viewport.CLEAR_MODE_ALWAYS)
+#	img.save_png("test.png")
 
 
 func _center_page():

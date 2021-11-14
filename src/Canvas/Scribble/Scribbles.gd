@@ -15,7 +15,14 @@ var can_draw = true
 onready var pos = self.get_global_mouse_position()
 onready var trail = $Line2D
 onready var tween = $Tween
+var draw_tex:ImageTexture
 
+#func _ready():
+#	var img = Image.new()
+#	img.load("res://NoteTaking.png")
+#	self.draw_tex = ImageTexture.new()
+#	self.draw_tex = ImageTexture.new()
+#	self.draw_tex.create_from_image(img)
 
 func _input(event):
 	if event.is_action_pressed("undo"):
@@ -26,6 +33,10 @@ func _input(event):
 		if self.undo_stack.size()>0:
 			self.draw_stack.push_back(self.undo_stack.pop_back())
 			self.update()
+	if event.is_action_pressed("Increase_pen_size"):
+		self._change_pen_size(0.1*self.width)
+	if event.is_action_pressed("decrease_pen_size"):
+		self._change_pen_size(-0.1*self.width)
 
 func _process(delta):
 	if self.visible: 
@@ -38,6 +49,7 @@ func _process(delta):
 			self.scribble_points.append(get_global_mouse_position())
 			self.trail.add_point(get_global_mouse_position())
 			self.update()
+#			self.emit_signal("draw")
 			self.drawing_time += delta
 		elif Input.is_action_just_released("draw"):
 			print("draw done")
@@ -59,6 +71,8 @@ func _process(delta):
 func _draw():
 	if self.scribble_points.size() > 2:
 		self.draw_polyline(self.scribble_points,self.color,self.width,self.anti_a)
+#		for pos in self.scribble_points:
+#			self.draw_texture(self.draw_tex,pos,Color.black)
 	for scribble in self.draw_stack:
 		if scribble.size() >2:
 			self.draw_polyline(scribble,self.color,self.width,self.anti_a)
@@ -113,3 +127,6 @@ func _can_draw():
 	var pos:Vector2 = get_global_mouse_position()
 	var rec:Rect2 = get_parent().get_global_rect()
 	return rec.has_point(pos)
+
+func _change_pen_size(amount:float):
+	self.width += amount

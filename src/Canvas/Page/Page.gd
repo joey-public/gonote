@@ -24,6 +24,7 @@ func _ready():
 #	$Viewport.size = self.page_rect.size
 #	print($Viewport.size)
 	self.size = self.sizes[self.size]
+	self.rect_size = self.size
 	var img = Image.new()
 	img.create(page_rect.size.x,page_rect.size.y,false,Image.FORMAT_RGBA8)
 	img.lock()
@@ -48,3 +49,4 @@ func _update_children(parent:Node):
 			print(child)
 			child.update()
 			self._update_children(child)
+
