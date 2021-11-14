@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Canvas",
 "language": "GDScript",
 "path": "res://src/Canvas/CanvasNode.gd"
+}, {
+"base": "Node2D",
+"class": "Scribbles",
+"language": "GDScript",
+"path": "res://src/Drawing/Scribble/Scribbles.gd"
 } ]
 _global_script_class_icons={
-"Canvas": ""
+"Canvas": "",
+"Scribbles": ""
 }
 
 [application]
@@ -28,6 +34,7 @@ config/icon="res://icon.png"
 
 Globals="*res://src/Singletons/globals.gd"
 SignalManager="*res://src/Singletons/SignalManager.tscn"
+Settings="*res://src/Singletons/Settings.gd"
 
 [display]
 

@@ -1,0 +1,9 @@
+[gd_scene format=2]
+
+[node name="StokeLine" type="Line2D"]
+begin_cap_mode = 2
+end_cap_mode = 2
+round_precision = 12
+antialiased = true
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]

@@ -1,8 +1,5 @@
 extends Control
 
-var Scribbles = preload("res://src/Canvas/Scribble/Scribbles.tscn")
-var Grid = preload("res://src/Canvas/Grid/Grid.tscn")
-
 export var size = "A4"
 export var page_color = Color.antiquewhite
 var sizes ={
