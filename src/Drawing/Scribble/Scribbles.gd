@@ -32,6 +32,7 @@ var draw_stack:Array = []
 
 onready var trail = $Trail
 onready var tween = $Tween
+onready var sprite = $TextureSprite
 
 func _ready():
 	self._on_settings_updated()
@@ -50,8 +51,11 @@ func _input(event):
 
 func _process(delta):
 	if not(self.current_scribble):return 
+	self.update()
 	self.scribble(delta)
 
+func _draw():
+	self.draw_circle(get_global_mouse_position(),self.width/2,self.color)
 
 func scribble(delta):
 	pass

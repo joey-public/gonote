@@ -69,7 +69,7 @@ func _draw():
 func _draw_circle_cursor():
 	var size = self.cursor_settings["size"]
 	var color = self.cursor_settings["fill_color"]
-	var draw_pos = self.pos + Vector2(12,30)#no idea why this makes the cirlse follow the mouse
+	var draw_pos = self.position
 	color.a = self.cursor_settings["fill_alpha"]
 	draw_circle(draw_pos,size,color)
 	if self.cursor_settings["draw_border"]:

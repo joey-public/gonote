@@ -1,7 +1,7 @@
 extends Control
 
 export var size = "A4"
-export var page_color = Color.antiquewhite
+export var page_color = Color.transparent
 var sizes ={
 	"A4":Vector2(595,842)
 }
@@ -29,7 +29,7 @@ func _ready():
 	var tex := ImageTexture.new()
 	tex.create_from_image(img)
 	self.sprite.texture = tex
-	get_parent()._center_page()
+#	get_parent()._center_page()
 #	$Sprite2.connect("mouse_entered",$Sprite2/Scribbles,"_on_mouse_enter_page")
 #	$Sprite2.connect("mouse_exited",$Sprite2/Scribbles,"_on_mouse_exit_page")
 

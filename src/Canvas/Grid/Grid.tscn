@@ -2,5 +2,5 @@
 
 [ext_resource path="res://src/Canvas/Grid/Grid.gd" type="Script" id=1]
 
-[node name="Grid" type="Node2D"]
+[node name="Grid" type="Sprite"]
 script = ExtResource( 1 )

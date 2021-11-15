@@ -1,4 +1,4 @@
-extends Node2D
+extends Sprite
 
 export var grid_size:int = 32
 export var fixed_canvans = false
@@ -35,13 +35,10 @@ export var eng_grid_settings:Dictionary = {
 
 var spacing:Vector2
 var line_count:Vector2
-
+var cam_offset = Vector2.ZERO
 #func _ready():
-#	self._set_canvas_dim()
-#	self._set_line_count()
-#	self.spacing = self.grid_size*Vector2(1,1)
-
-
+#	self.connect("resized",self,"update")
+	
 func _process(_delta):
 	var temp = self.get_viewport().get_visible_rect().size
 	if temp!=self.canvas_dim and !self.fixed_canvans:
