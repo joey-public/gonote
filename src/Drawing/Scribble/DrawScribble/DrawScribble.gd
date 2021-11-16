@@ -48,10 +48,15 @@ func scribble(_delta):
 
 func _polyline_draw():
 	if self.scribble_points.size() > 2:
+		if self.width>1:draw_circle(self.scribble_points[0],self.width,self.color)
 		self.draw_polyline(self.scribble_points,self.color,self.width,self.anti_a)
+		if self.width>1:draw_circle(self.scribble_points[self.scribble_points.size()-1],self.width/2,self.color)
 	for stroke in self.draw_stack:
 		if stroke.mouse_points.size() >2:
+			if stroke.width>1:self.draw_circle(stroke.mouse_points[0],stroke.width/2,stroke.color)
 			self.draw_polyline(stroke.mouse_points,stroke.color,stroke.width,stroke.anti_a)
+			if stroke.width>1:self.draw_circle(stroke.mouse_points[stroke.mouse_points.size()-1],stroke.width/2,stroke.color)
+
 
 func _multiline_draw():
 	if self.scribble_points.size() > 2:

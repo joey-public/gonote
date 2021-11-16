@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/Util/TextureGen.gd" type="Script" id=1]
+
+[node name="TextureGen" type="Sprite"]
+centered = false
+script = ExtResource( 1 )
+
+[node name="CaptureViewport" type="Viewport" parent="."]
+own_world = true
+
+[node name="Pen" type="Node2D" parent="CaptureViewport"]
+
+[node name="Camera2D" type="Camera2D" parent="CaptureViewport/Pen"]
+current = true
