@@ -1,27 +1,33 @@
 class_name DrawScribble
 extends Scribbles
 
-enum DRAW_MODES {POLYLINE,TEXTURE,MULTILINE,LINE,CIRCLE,RECT}
+enum DRAW_MODES {POLYLINE,POLYLINE_XFORM,TEXTURE,MULTILINE,LINE,CIRCLE,RECT}
 var drawfuncs:Dictionary = {
 	DRAW_MODES.POLYLINE: funcref(self,"_polyline_draw"),
+	DRAW_MODES.POLYLINE_XFORM: funcref(self,"_xform_polyline_draw"),
 	DRAW_MODES.TEXTURE: funcref(self,"_texture_draw"),
 	DRAW_MODES.MULTILINE: funcref(self,"_multiline_draw"),
 	DRAW_MODES.LINE: funcref(self,"_line_draw"),
 	DRAW_MODES.CIRCLE: funcref(self,"_circle_draw"),
 	DRAW_MODES.RECT: funcref(self,"_rect_draw"),
 }
-var draw_mode = DRAW_MODES.POLYLINE
+var draw_mode = DRAW_MODES.POLYLINE_XFORM
+var xform:Transform2D
 
 var _pen = null
 var _prev_mouse_pos = Vector2()
 #var _use_moving_average:bool = true
 
 func _ready():
+#	self.width = 10.0
 	var img = Image.new()
 	img.load("res://NoteTaking.png")
 	img.resize(self.width*2,self.width*2)
 	self.texture = ImageTexture.new()
 	self.texture.create_from_image(img)
+	self.xform.origin = Vector2.ZERO
+	self.xform.x = self.width*Vector2(1,0)
+	self.xform.y = self.width*Vector2(0,1)
 
 func _draw():
 	self.drawfuncs[self.draw_mode].call_func()
@@ -44,11 +50,11 @@ func scribble(_delta):
 		var pos:Vector2 = get_global_mouse_position()
 		self.scribble_points.append(pos)
 		self._calc_bbox(pos)
-		self.trail.add_point(get_global_mouse_position())
+		self.trail.add_point(pos)
 		self.update()
 	elif Input.is_action_just_released("draw"):
 		self.draw_stack.push_back(Scribbles.Stroke.new(self))
-		self.scribble_points.clear()
+		self.scribble_points.resize(0)
 	else:
 		self._remove_trail_point(0)
 	self._prev_mouse_pos = get_global_mouse_position()
@@ -67,19 +73,36 @@ func _get_center():
 func _polyline_draw():
 	if self.scribble_points.size() > 2:
 		if self.width>1:draw_circle(self.scribble_points[0],self.width,self.color)
-#		self.draw_polyline(self.scribble_points,self.color,self.width,self.anti_a)
+		self.draw_polyline(self.scribble_points,self.color,self.width,self.anti_a)
 #		self.draw_rect(self.bbox,Color.chartreuse,false,self.width,true)
-		self.draw_set_transform(self.bbox.end,0,Vector2(1,1)*self.width)
-		self.draw_rect(self.bbox,Color.chartreuse,false,self.width,true)
-		self.draw_circle(self.bbox.end,2,Color.red)
-		self.draw_polyline(self.scribble_points,self.color,1,self.anti_a)
 		if self.width>1:draw_circle(self.scribble_points[self.scribble_points.size()-1],self.width/2,self.color)
 	for stroke in self.draw_stack:
 		if stroke.mouse_points.size() >2:
-			self.draw_rect(stroke.bbox,Color.blueviolet,false,1,true)
+#			self.draw_rect(stroke.bbox,Color.blueviolet,false,1,true)
 			if stroke.width>1:self.draw_circle(stroke.mouse_points[0],stroke.width/2,stroke.color)
 			self.draw_polyline(stroke.mouse_points,stroke.color,stroke.width,stroke.anti_a)
 			if stroke.width>1:self.draw_circle(stroke.mouse_points[stroke.mouse_points.size()-1],stroke.width/2,stroke.color)
+
+func _xform_polyline_draw():
+	if self.scribble_points.size() > 3:
+		self.xform.origin = self._get_center() #move transform point to center of bounding box
+		self.xform.x.x = self.width
+		self.xform.y.y = self.width
+		self.draw_set_transform_matrix(self.xform) #draw with the tranform
+		self.xform.origin = -self.width*self._get_center() #transform all drawing corrdinates abck to the origonal translation
+		if self.width>1:draw_circle(self.xform.xform(self.scribble_points[0]),self.width,self.color)
+		self.draw_polyline(self.xform.xform(self.scribble_points),self.color,1,self.anti_a)
+		self.draw_rect(self.xform.xform(self.bbox),Color.chartreuse,false,1,true)
+		self.draw_circle(self.xform.xform(self.bbox.end),2,Color.red)
+		self.draw_circle(self.xform.xform(self.bbox.position),2,Color.yellow)
+		self.draw_circle(self.xform.xform(self._get_center()),2,Color.blue)
+		if self.width>1:draw_circle(self.xform.xform(self.scribble_points[self.scribble_points.size()-1]),self.width/2,self.color)
+#	for stroke in self.draw_stack:
+#		if stroke.mouse_points.size() >2:
+#			self.draw_rect(stroke.bbox,Color.blueviolet,false,1,true)
+#			if stroke.width>1:self.draw_circle(stroke.mouse_points[0],stroke.width/2,stroke.color)
+#			self.draw_polyline(stroke.mouse_points,stroke.color,stroke.width,stroke.anti_a)
+#			if stroke.width>1:self.draw_circle(stroke.mouse_points[stroke.mouse_points.size()-1],stroke.width/2,stroke.color)
 
 
 func _multiline_draw():

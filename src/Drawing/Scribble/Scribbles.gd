@@ -25,7 +25,7 @@ var trail_anit_a:bool
 var trail_texture:Texture
 
 var current_scribble = true
-var scribble_points:Array = []
+var scribble_points:PoolVector2Array = []
 var undo_stack:Array = []
 var draw_stack:Array = []
 
