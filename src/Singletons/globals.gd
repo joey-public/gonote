@@ -10,7 +10,7 @@ var display_res
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Engine.target_fps = 120
+	Engine.target_fps = 60
 	display_res = self.get_viewport().get_visible_rect().size
 
 func _process(_delta):

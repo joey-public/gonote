@@ -1,7 +1,7 @@
 extends Sprite
 
 
-export var defaults_size = Vector2(30,30)
+export var defaults_size = Vector2(500,500)
 
 var save_path = "res://assets/GeneratedTextures/"
 var save_name = "plus.png"
@@ -42,18 +42,19 @@ func _capture():
 	tex.create_from_image(img)
 	self.texture = tex
 	print("done captureing")
-	img.save_png(self.save_path+save_name)
+#	img.save_png(self.save_path+save_name)
 
 func _on_pen_draw():
 	var button_col = Color.antiquewhite
 #	button_col.a = 0.7
-#	var rect:Rect2 = Rect2(Vector2(-15,-35),self.defaults_size)
-#	self.pen.draw_rect(rect,button_col,true)
-#	self.pen.draw_rect(rect,Color.black,false,2)
-	self.pen.draw_circle(Vector2.ZERO,10,button_col)
-	self.pen.draw_arc(Vector2.ZERO,10,0,2*PI,60,Color.black,2,true)
-	self.pen.draw_line(Vector2(-5,0),Vector2(5,0),Color.black,1.5)
-	self.pen.draw_line(Vector2(0,-5),Vector2(0,5),Color.black,1.5)
+	var rect:Rect2 = Rect2(Vector2(0,0),Vector2(100,100))
+	self.pen.draw_set_transform(Vector2.ZERO,45,Vector2(1,1))
+	self.pen.draw_rect(rect,button_col,true)
+	self.pen.draw_rect(rect,Color.black,false,2)
+#	self.pen.draw_circle(Vector2.ZERO,10,button_col)
+#	self.pen.draw_arc(Vector2.ZERO,10,0,2*PI,60,Color.black,2,true)
+#	self.pen.draw_line(Vector2(-5,0),Vector2(5,0),Color.black,1.5)
+#	self.pen.draw_line(Vector2(0,-5),Vector2(0,5),Color.black,1.5)
 #	self.pen.draw_line(Vector2(0,0),Vector2(0,70),Color.black,1)
 #	self.pen.draw_circle(Vector2(0,0),2,Color.black)#	self.pen.draw_circle(Vector2.ZERO,200,Color.antiquewhite)
 #	var rect:Rect2 = Rect2(Vector2(-50,-75),Vector2(self.defaults_size.x,self.defaults_size.y))

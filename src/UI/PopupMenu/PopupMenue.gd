@@ -1,6 +1,6 @@
 extends Control
 
-export var start_scale:Vector2 = Vector2(0.5,0.5)
+export var start_scale:Vector2 = Vector2(0.1,0.1)
 export var end_scale:Vector2 = Vector2(2,2)
 
 onready var tween = $Tween
@@ -26,5 +26,5 @@ func _tween_in():
 	self.tween.interpolate_property(self,"rect_scale",self.start_scale,self.end_scale,0.5,Tween.TRANS_EXPO,Tween.EASE_OUT)
 	self.tween.start()
 func _tween_out():
-	self.tween.interpolate_property(self,"rect_scale",self.end_scale,self.start_scale,0.5,Tween.TRANS_EXPO,Tween.EASE_OUT)
+	self.tween.interpolate_property(self,"rect_scale",self.end_scale,self.start_scale,0.5,Tween.TRANS_EXPO,Tween.EASE_IN_OUT)
 	self.tween.start()
