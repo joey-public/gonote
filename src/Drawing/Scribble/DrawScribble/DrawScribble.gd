@@ -11,7 +11,7 @@ var drawfuncs:Dictionary = {
 	DRAW_MODES.CIRCLE: funcref(self,"_circle_draw"),
 	DRAW_MODES.RECT: funcref(self,"_rect_draw"),
 }
-var draw_mode = DRAW_MODES.POLYLINE_XFORM
+export var draw_mode = DRAW_MODES.POLYLINE_XFORM
 var xform:Transform2D
 
 var _pen = null
@@ -86,12 +86,15 @@ func _polyline_draw():
 func _xform_polyline_draw():
 	if self.scribble_points.size() > 3:
 		self.xform.origin = self._get_center() #move transform point to center of bounding box
-		self.xform.x.x = self.width
-		self.xform.y.y = self.width
+		self.xform.x.x = self.width/10
+		self.xform.y.y = self.width/10
+#		self.xform.xform(self.bbox)
 		self.draw_set_transform_matrix(self.xform) #draw with the tranform
-		self.xform.origin = -self.width*self._get_center() #transform all drawing corrdinates abck to the origonal translation
+		self.xform.origin = -10*self._get_center()/self.width#transform all drawing corrdinates abck to the origonal translation
+		self.xform.x.x = 10/self.width
+		self.xform.y.y = 10/self.width
 		if self.width>1:draw_circle(self.xform.xform(self.scribble_points[0]),self.width,self.color)
-		self.draw_polyline(self.xform.xform(self.scribble_points),self.color,1,self.anti_a)
+		self.draw_polyline(self.xform.xform(self.scribble_points),self.color,10,self.anti_a)
 		self.draw_rect(self.xform.xform(self.bbox),Color.chartreuse,false,1,true)
 		self.draw_circle(self.xform.xform(self.bbox.end),2,Color.red)
 		self.draw_circle(self.xform.xform(self.bbox.position),2,Color.yellow)
