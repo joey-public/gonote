@@ -20,6 +20,7 @@ var _prev_mouse_pos = Vector2()
 
 func _ready():
 #	self.width = 10.0
+	self._on_settings_updated()
 	var img = Image.new()
 	img.load("res://NoteTaking.png")
 	img.resize(self.width*2,self.width*2)
@@ -35,10 +36,15 @@ func _draw():
 func _input(event):
 	if event.is_action_pressed("Increase_pen_size"):
 		self.width += 0.1
+		self.trail.width += 0.1
 		print(self.width)
+		print(self.trail.width)
 	if event.is_action_pressed("decrease_pen_size"):
 		self.width -= 0.1
+		self.trail.width -= 0.1
 		print(self.width)
+		print(self.trail.width)
+		
 
 func scribble(_delta):
 	if Input.is_action_just_pressed("draw"):
@@ -67,8 +73,8 @@ func _calc_bbox(pos:Vector2):
 	self.bbox.position=Vector2(min_x,min_y) #bottom left 
 	self.bbox.size = Vector2(max_x-min_x,max_y-min_y) #top 
 
-func _get_center():
-	return self.bbox.position+0.5*self.bbox.size
+func _get_center(box:Rect2=self.bbox):
+	return box.position+0.5*box.size
 
 func _polyline_draw():
 	if self.scribble_points.size() > 2:
@@ -84,29 +90,24 @@ func _polyline_draw():
 			if stroke.width>1:self.draw_circle(stroke.mouse_points[stroke.mouse_points.size()-1],stroke.width/2,stroke.color)
 
 func _xform_polyline_draw():
-	if self.scribble_points.size() > 3:
-		self.xform.origin = self._get_center() #move transform point to center of bounding box
-		self.xform.x.x = self.width/10
-		self.xform.y.y = self.width/10
+	if self.scribble_points.size() > 2:
 #		self.xform.xform(self.bbox)
+		self._set_xform1(self.bbox,self.width)
 		self.draw_set_transform_matrix(self.xform) #draw with the tranform
-		self.xform.origin = -10*self._get_center()/self.width#transform all drawing corrdinates abck to the origonal translation
-		self.xform.x.x = 10/self.width
-		self.xform.y.y = 10/self.width
-		if self.width>1:draw_circle(self.xform.xform(self.scribble_points[0]),self.width,self.color)
+		self._set_xform2(self.bbox,self.width)
+		self.draw_circle(self.xform.xform(self.scribble_points[0]),5,self.color)
 		self.draw_polyline(self.xform.xform(self.scribble_points),self.color,10,self.anti_a)
-		self.draw_rect(self.xform.xform(self.bbox),Color.chartreuse,false,1,true)
-		self.draw_circle(self.xform.xform(self.bbox.end),2,Color.red)
-		self.draw_circle(self.xform.xform(self.bbox.position),2,Color.yellow)
-		self.draw_circle(self.xform.xform(self._get_center()),2,Color.blue)
-		if self.width>1:draw_circle(self.xform.xform(self.scribble_points[self.scribble_points.size()-1]),self.width/2,self.color)
-#	for stroke in self.draw_stack:
-#		if stroke.mouse_points.size() >2:
-#			self.draw_rect(stroke.bbox,Color.blueviolet,false,1,true)
-#			if stroke.width>1:self.draw_circle(stroke.mouse_points[0],stroke.width/2,stroke.color)
-#			self.draw_polyline(stroke.mouse_points,stroke.color,stroke.width,stroke.anti_a)
-#			if stroke.width>1:self.draw_circle(stroke.mouse_points[stroke.mouse_points.size()-1],stroke.width/2,stroke.color)
-
+		self.draw_circle(self.xform.xform(self.scribble_points[-1]),5,self.color)
+#		self._debug_draw()
+	for stroke in self.draw_stack:
+		if stroke.mouse_points.size() >2:
+			self._set_xform1(stroke.bbox,stroke.width)
+			self.draw_set_transform_matrix(self.xform) #draw with the tranform
+			self._set_xform2(stroke.bbox,stroke.width)
+			self.draw_circle(self.xform.xform(stroke.mouse_points[0]),5,stroke.color)
+			self.draw_polyline(self.xform.xform(stroke.mouse_points),stroke.color,10,stroke.anti_a)
+			self.draw_circle(self.xform.xform(stroke.mouse_points[-1]),5,stroke.color)
+#			self._debug_draw(stroke.bbox)
 
 func _multiline_draw():
 	if self.scribble_points.size() > 2:
@@ -181,6 +182,17 @@ func _rect_draw():
 #	draw_set_transform(p1,rot,scale)
 #	draw_rect(r,self.color)
 
-		
-		
+func _set_xform1(box:Rect2,width:float):
+		self.xform.origin = self._get_center(box) #move transform point to center of bounding box
+		self.xform.x.x = width/10
+		self.xform.y.y = width/10
+func _set_xform2(box:Rect2,width:float):
+		self.xform.origin = -10*self._get_center(box)/width#transform all drawing corrdinates abck to the origonal translation
+		self.xform.x.x = 10/width
+		self.xform.y.y = 10/width
+func _debug_draw(box:Rect2=self.bbox):
+	self.draw_rect(self.xform.xform(box),Color.chartreuse,false,1,true)
+	self.draw_circle(self.xform.xform(box.end),20,Color.red)
+	self.draw_circle(self.xform.xform(box.position),20,Color.yellow)
+	self.draw_circle(self.xform.xform(self._get_center(box)),20,Color.blue)
 

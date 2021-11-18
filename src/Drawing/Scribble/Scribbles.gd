@@ -7,7 +7,7 @@ const DEFAULT_ANTI_A:bool = true
 const DEFAULT_TEXTURE:Texture = null
 
 const DEFAULT_SHOW_TRAIL:bool = true
-const DEFAULT_TRAIL_WIDTH:float = 3.0
+const DEFAULT_TRAIL_WIDTH:float = 20.0
 const DEFAULT_TRAIL_COLOR:Color = Color.black
 const DEFAULT_TRAIL_ANTI_A:bool = true
 const DEFAULT_TRAIL_TEXTURE:Texture = null
@@ -56,8 +56,8 @@ func _process(delta):
 	self.update()
 	self.scribble(delta)
 
-func _draw():
-	self.draw_circle(get_global_mouse_position(),self.width/2,self.color)
+#func _draw():
+#	self.draw_circle(get_global_mouse_position(),self.width/2,self.color)
 
 func scribble(delta):
 	pass
