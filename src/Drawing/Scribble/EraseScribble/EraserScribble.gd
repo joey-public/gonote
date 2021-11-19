@@ -26,5 +26,5 @@ func _draw():
 			else:
 				var color = Color.chartreuse
 				self.draw_rect(stroke.bbox,color,false,1)
-				color.a = 0.2
+				color.a = 0.1
 				self.draw_rect(stroke.bbox,color,true,1)

@@ -35,6 +35,10 @@ onready var tween = $Tween
 onready var sprite = $TextureSprite
 onready var bbox:Rect2 = Rect2()
 
+var draw_xform:Transform2D = Transform2D.IDENTITY
+var point_xform:Transform2D = Transform2D.IDENTITY
+var draw_width
+
 
 func _ready():
 	self._on_settings_changed()
@@ -93,6 +97,9 @@ class Stroke:
 	var anti_a:bool
 	var mouse_points:PoolVector2Array
 	var bbox:Rect2
+	var draw_xform:Transform2D = Transform2D.IDENTITY
+	var point_xform:Transform2D = Transform2D.IDENTITY
+	var draw_width:float
 	func _init(scrib:Scribbles):
 		self.width = scrib.width
 		self.color = scrib.color
@@ -100,6 +107,9 @@ class Stroke:
 		self.anti_a = scrib.anti_a
 		self.mouse_points = self._process_points(scrib.scribble_points)
 		self.bbox = scrib.bbox
+		self.draw_xform = scrib.draw_xform
+		self.point_xform = scrib.point_xform
+		self.draw_width = scrib.draw_width
 	func map_mouse_pos_to_px():
 		pass
 	func _process_points(p:PoolVector2Array)->PoolVector2Array:
@@ -121,5 +131,11 @@ class Stroke:
 		return Rect2(top_left,size)
 	func draw(canvas:CanvasItem):
 		for point in self.mouse_points:
-			canvas.draw_polyline(self.mouse_points,self.color,self.width,self.anti_a)
+			canvas.draw_set_transform_matrix(self.draw_xform)
+			canvas.draw_circle(self.point_xform.xform(self.mouse_points[0]),self.draw_width/2,self.color)			
+			canvas.draw_polyline(self.point_xform.xform(self.mouse_points),self.color,self.draw_width,self.anti_a)
+			canvas.draw_circle(self.point_xform.xform(self.mouse_points[-1]),self.draw_width/2,self.color)			
+			
+			
+			
 	

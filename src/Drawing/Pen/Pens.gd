@@ -16,6 +16,7 @@ func _input(event):
 	if event.is_action_pressed("Erase"):
 		Settings.emit_signal("change_cursor_mode",Cursor.CURSOR_MODES.RECTANGE)
 		self._change_pen(self.erase_pen)
+		Globals.emit_signal("redraw_stack")
 
 func _change_pen(new_pen:Scribbles):
 	self.cur_pen.is_active = false

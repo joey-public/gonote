@@ -11,7 +11,7 @@ var drawfuncs:Dictionary = {
 	DRAW_MODES.RECT: funcref(self,"_rect_draw"),
 }
 export var draw_mode = DRAW_MODES.POLYLINE_XFORM
-var xform:Transform2D
+#var xform:Transform2D
 
 var _pen = null
 var _prev_mouse_pos = Vector2()
@@ -25,9 +25,10 @@ func _ready():
 	img.resize(self.width*2,self.width*2)
 	self.texture = ImageTexture.new()
 	self.texture.create_from_image(img)
-	self.xform.origin = Vector2.ZERO
-	self.xform.x = self.width*Vector2(1,0)
-	self.xform.y = self.width*Vector2(0,1)
+#	self.xform.origin = Vector2.ZERO
+#	self.xform.x = self.width*Vector2(1,0)
+#	self.xform.y = self.width*Vector2(0,1)
+	self.draw_width = 10
 
 func _draw():
 	self.drawfuncs[self.draw_mode].call_func()
@@ -62,7 +63,7 @@ func scribble(_delta):
 		self.update()
 	elif Input.is_action_just_released("draw"):
 		Globals.draw_stack.push_back(Scribbles.Stroke.new(self))
-		Globals.emit_signal("redraw_stack")
+#		Globals.emit_signal("redraw_stack")
 		self.scribble_points.resize(0)
 	else:
 		self._remove_trail_point(0)
@@ -95,21 +96,21 @@ func _polyline_draw():
 func _xform_polyline_draw():
 	if self.scribble_points.size() > 2:
 #		self.xform.xform(self.bbox)
-		self._set_xform1(self.bbox,self.width)
-		self.draw_set_transform_matrix(self.xform) #draw with the tranform
-		self._set_xform2(self.bbox,self.width)
-		self.draw_circle(self.xform.xform(self.scribble_points[0]),5,self.color)
-		self.draw_polyline(self.xform.xform(self.scribble_points),self.color,10,self.anti_a)
-		self.draw_circle(self.xform.xform(self.scribble_points[-1]),5,self.color)
+		self._set_draw_xform(self.bbox,self.width)
+		self.draw_set_transform_matrix(self.draw_xform) #draw with the tranform
+		self._set_point_xform(self.bbox,self.width)
+		self.draw_circle(self.point_xform.xform(self.scribble_points[0]),self.draw_width/2,self.color)
+		self.draw_polyline(self.point_xform.xform(self.scribble_points),self.color,self.draw_width,self.anti_a)
+		self.draw_circle(self.point_xform.xform(self.scribble_points[-1]),self.draw_width/2,self.color)
 #		self._debug_draw()
-#	for stroke in Globals.draw_stack:
-#		if stroke.mouse_points.size() >2:
-#			self._set_xform1(stroke.bbox,stroke.width)
-#			self.draw_set_transform_matrix(self.xform) #draw with the tranform
-#			self._set_xform2(stroke.bbox,stroke.width)
-#			self.draw_circle(self.xform.xform(stroke.mouse_points[0]),5,stroke.color)
-#			self.draw_polyline(self.xform.xform(stroke.mouse_points),stroke.color,10,stroke.anti_a)
-#			self.draw_circle(self.xform.xform(stroke.mouse_points[-1]),5,stroke.color)
+	for stroke in Globals.draw_stack:
+		if stroke.mouse_points.size() >2:
+			self._set_draw_xform(stroke.bbox,stroke.width)
+			self.draw_set_transform_matrix(self.draw_xform) #draw with the tranform
+			self._set_point_xform(stroke.bbox,stroke.width)
+			self.draw_circle(self.point_xform.xform(stroke.mouse_points[0]),self.draw_width/2,stroke.color)
+			self.draw_polyline(self.point_xform.xform(stroke.mouse_points),stroke.color,self.draw_width,stroke.anti_a)
+			self.draw_circle(self.point_xform.xform(stroke.mouse_points[-1]),self.draw_width/2,stroke.color)
 #			self._debug_draw(stroke.bbox)
 
 func _multiline_draw():
@@ -185,17 +186,17 @@ func _rect_draw():
 #	draw_set_transform(p1,rot,scale)
 #	draw_rect(r,self.color)
 
-func _set_xform1(box:Rect2,width:float):
-		self.xform.origin = self._get_center(box) #move transform point to center of bounding box
-		self.xform.x.x = width/10
-		self.xform.y.y = width/10
-func _set_xform2(box:Rect2,width:float):
-		self.xform.origin = -10*self._get_center(box)/width#transform all drawing corrdinates abck to the origonal translation
-		self.xform.x.x = 10/width
-		self.xform.y.y = 10/width
+func _set_draw_xform(box:Rect2,width:float):
+		self.draw_xform.origin = self._get_center(box) #move transform point to center of bounding box
+		self.draw_xform.x.x = width/self.draw_width
+		self.draw_xform.y.y = width/self.draw_width
+func _set_point_xform(box:Rect2,width:float):
+		self.point_xform.origin = -self.draw_width*self._get_center(box)/width#transform all drawing corrdinates abck to the origonal translation
+		self.point_xform.x.x = self.draw_width/width
+		self.point_xform.y.y = self.draw_width/width
 func _debug_draw(box:Rect2=self.bbox):
-	self.draw_rect(self.xform.xform(box),Color.chartreuse,false,1,true)
-	self.draw_circle(self.xform.xform(box.end),20,Color.red)
-	self.draw_circle(self.xform.xform(box.position),20,Color.yellow)
-	self.draw_circle(self.xform.xform(self._get_center(box)),20,Color.blue)
+	self.draw_rect(self.point_xform.xform(box),Color.chartreuse,false,1,true)
+	self.draw_circle(self.point_xform.xform(box.end),20,Color.red)
+	self.draw_circle(self.point_xform.xform(box.position),20,Color.yellow)
+	self.draw_circle(self.point_xform.xform(self._get_center(box)),20,Color.blue)
 

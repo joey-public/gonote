@@ -63,5 +63,6 @@ func _on_redraw_stack(from:int=0,to:int=-1):
 
 func _draw():
 	for i in range(self.redraw_from,self.redraw_to):
-		Globals.draw_stack[i].draw(self)
+#		Globals.draw_stack[i].draw(self)
+		self.draw_circle(Globals.draw_stack[i].bbox.end,10,Color.black)
 		

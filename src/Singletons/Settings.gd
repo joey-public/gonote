@@ -49,12 +49,14 @@ func _ready():
 
 
 func _on_change_scribble_settings(new:Dictionary):
-	self.scribble_settings = new
+	for key in new:
+		self.scribble_settings[key] = new[key]
 	emit_signal("scribble_settings_chaged")
 
 
 func _on_change_cursor_settings(new:Dictionary):
-	self.cursor_settings = new
+	for key in new:
+		self.cursor_settings[key] = new[key] 
 	emit_signal("change_cursor_settings")
 
 
