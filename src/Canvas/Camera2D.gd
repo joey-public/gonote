@@ -30,14 +30,14 @@ func _input(_event):
 func _process(delta):
 	if Input.is_action_just_pressed("pan"):
 		self._pan_start = self.get_global_mouse_position()
-		SignalManager.emit_signal("fps_changed",
-									Globals.refresh_rates["pan_rate"])
+#		SignalManager.emit_signal("fps_changed",
+#									Globals.refresh_rates["pan_rate"])
 	elif Input.is_action_pressed("pan"):
 		var new = self.get_global_mouse_position()
-		offset = offset - (new-self._pan_start)
-	else:
-		SignalManager.emit_signal("fps_changed",
-									Globals.refresh_rates["slow_rate"])
+#		offset = offset - (new-self._pan_start)
+#	else:
+#		SignalManager.emit_signal("fps_changed",
+#									Globals.refresh_rates["slow_rate"])
 	if Input.is_action_pressed("zoom_in") and self._can_zoom_in():
 		self.zoom -= self.zoom*((self.zoom_speed*delta)/100)
 	elif Input.is_action_pressed("zoom_out") and self._can_zoom_out():

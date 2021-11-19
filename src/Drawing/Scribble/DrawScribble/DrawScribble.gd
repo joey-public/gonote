@@ -1,4 +1,3 @@
-class_name DrawScribble
 extends Scribbles
 
 enum DRAW_MODES {POLYLINE,POLYLINE_XFORM,TEXTURE,MULTILINE,LINE,CIRCLE,RECT}
@@ -19,8 +18,8 @@ var _prev_mouse_pos = Vector2()
 #var _use_moving_average:bool = true
 
 func _ready():
-#	self.width = 10.0
-	self._on_settings_updated()
+#	self.width = 10.
+	self._on_settings_changed()
 	var img = Image.new()
 	img.load("res://NoteTaking.png")
 	img.resize(self.width*2,self.width*2)
@@ -32,6 +31,9 @@ func _ready():
 
 func _draw():
 	self.drawfuncs[self.draw_mode].call_func()
+	self.draw_set_transform_matrix(Transform2D.IDENTITY)
+	self.draw_circle(get_global_mouse_position(),self.width,self.color)
+#	self.draw_circle(self.xform.xform(get_global_mouse_position()),5,self.color)
 
 func _input(event):
 	if event.is_action_pressed("Increase_pen_size"):
@@ -59,7 +61,8 @@ func scribble(_delta):
 		self.trail.add_point(pos)
 		self.update()
 	elif Input.is_action_just_released("draw"):
-		self.draw_stack.push_back(Scribbles.Stroke.new(self))
+		Globals.draw_stack.push_back(Scribbles.Stroke.new(self))
+		Globals.emit_signal("redraw_stack")
 		self.scribble_points.resize(0)
 	else:
 		self._remove_trail_point(0)
@@ -82,7 +85,7 @@ func _polyline_draw():
 		self.draw_polyline(self.scribble_points,self.color,self.width,self.anti_a)
 #		self.draw_rect(self.bbox,Color.chartreuse,false,self.width,true)
 		if self.width>1:draw_circle(self.scribble_points[self.scribble_points.size()-1],self.width/2,self.color)
-	for stroke in self.draw_stack:
+	for stroke in Globals.draw_stack:
 		if stroke.mouse_points.size() >2:
 #			self.draw_rect(stroke.bbox,Color.blueviolet,false,1,true)
 			if stroke.width>1:self.draw_circle(stroke.mouse_points[0],stroke.width/2,stroke.color)
@@ -99,20 +102,20 @@ func _xform_polyline_draw():
 		self.draw_polyline(self.xform.xform(self.scribble_points),self.color,10,self.anti_a)
 		self.draw_circle(self.xform.xform(self.scribble_points[-1]),5,self.color)
 #		self._debug_draw()
-	for stroke in self.draw_stack:
-		if stroke.mouse_points.size() >2:
-			self._set_xform1(stroke.bbox,stroke.width)
-			self.draw_set_transform_matrix(self.xform) #draw with the tranform
-			self._set_xform2(stroke.bbox,stroke.width)
-			self.draw_circle(self.xform.xform(stroke.mouse_points[0]),5,stroke.color)
-			self.draw_polyline(self.xform.xform(stroke.mouse_points),stroke.color,10,stroke.anti_a)
-			self.draw_circle(self.xform.xform(stroke.mouse_points[-1]),5,stroke.color)
+#	for stroke in Globals.draw_stack:
+#		if stroke.mouse_points.size() >2:
+#			self._set_xform1(stroke.bbox,stroke.width)
+#			self.draw_set_transform_matrix(self.xform) #draw with the tranform
+#			self._set_xform2(stroke.bbox,stroke.width)
+#			self.draw_circle(self.xform.xform(stroke.mouse_points[0]),5,stroke.color)
+#			self.draw_polyline(self.xform.xform(stroke.mouse_points),stroke.color,10,stroke.anti_a)
+#			self.draw_circle(self.xform.xform(stroke.mouse_points[-1]),5,stroke.color)
 #			self._debug_draw(stroke.bbox)
 
 func _multiline_draw():
 	if self.scribble_points.size() > 2:
 		self.draw_multiline(self.scribble_points,self.color,self.width,self.anti_a)
-	for stroke in self.draw_stack:
+	for stroke in Globals.draw_stack:
 		if stroke.mouse_points.size() >2:
 			self.draw_multiline(stroke.mouse_points,stroke.color,stroke.width,stroke.anti_a)
 
@@ -120,7 +123,7 @@ func _texture_draw():
 	if self.scribble_points.size() > 2:
 		for point in self.scribble_points:
 			self.draw_texture(self.texture,point,self.color,null)
-	for stroke in self.draw_stack:
+	for stroke in Globals.draw_stack:
 		if stroke.mouse_points.size() >2:
 			for point in stroke.mouse_points:
 				self.draw_texture(self.texture,point,self.color,null)
@@ -136,7 +139,7 @@ func _line_draw():
 		if i !=0:
 			draw_line(self.scribble_points[i-1],self.scribble_points[i],self.color,self.width,self.anti_a)
 			draw_circle(self.scribble_points[i],self.width/2,self.color)
-#	for stroke in self.draw_stack:
+#	for stroke in Globals.draw_stack:
 #		if stroke.mouse_points.size() >2:
 #			for i in stroke.mouse_points.size():
 #				if i !=0:draw_line(stroke.mouse_points[i-1],stroke.mouse_points[i],self.color,self.width,self.anti_a)

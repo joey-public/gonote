@@ -15,7 +15,7 @@ onready var page_rect = Rect2(Vector2.ZERO,self.sizes[self.size])
 onready var border_rect = Rect2(Vector2(-1,-1)*self.border_width/2.0,
 						page_rect.size+Vector2(1,1)*self.border_width)
 # Called when the node enters the scene tree for the first time.
-onready var scribbles = $Sprite2/Scribbles
+#onready var scribbles = $Sprite2/Scribbles
 onready var Grid2 = $Sprite2/Grid2
 func _ready():
 #	$Viewport.size = self.page_rect.size
@@ -43,7 +43,7 @@ func _draw():
 func _update_children(parent:Node):
 	for child in parent.get_children():
 		if child is CanvasItem:
-			print(child)
+#			print(child)
 			child.update()
 			self._update_children(child)
 

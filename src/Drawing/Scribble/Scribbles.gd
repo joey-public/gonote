@@ -24,10 +24,10 @@ var trail_color:Color
 var trail_anit_a:bool 
 var trail_texture:Texture
 
-var current_scribble = true
+var is_active = false
 var scribble_points:PoolVector2Array = []
-var undo_stack:Array = []
-var draw_stack:Array = []
+#var undo_stack:Array = []
+#var draw_stack:Array = []
 
 
 onready var trail = $Trail
@@ -37,22 +37,23 @@ onready var bbox:Rect2 = Rect2()
 
 
 func _ready():
-	self._on_settings_updated()
+	self._on_settings_changed()
+	Settings.connect("scribble_settings_changed",self,"_on_settings_changed")
 
 func _input(event):
-	if not self.current_scribble: return 
+	if not self.is_active: return 
 	if event.is_action_pressed("undo"):
-		if self.draw_stack.size()>0:
-			self.undo_stack.push_back(self.draw_stack.pop_back())
+		if Globals.draw_stack.size()>0:
+			Globals.undo_stack.push_back(Globals.draw_stack.pop_back())
 			self.update()
 	if event.is_action_pressed("redo"):
-		if self.undo_stack.size()>0:
-			self.draw_stack.push_back(self.undo_stack.pop_back())
+		if Globals.undo_stack.size()>0:
+			Globals.draw_stack.push_back(Globals.undo_stack.pop_back())
 			self.update()
 
 
 func _process(delta):
-	if not(self.current_scribble):return 
+	if not(self.is_active):return 
 	self.update()
 	self.scribble(delta)
 
@@ -71,7 +72,7 @@ func _remove_trail_point(mpos:int)->void:
 	if self.trail.get_point_count() >0:
 		self.trail.remove_point(mpos)
 
-func _on_settings_updated()->void:
+func _on_settings_changed()->void:
 	self.width = Settings.scribble_settings[Settings.SCRIBBLE_SETTINGS.WIDTH]
 	self.color = Settings.scribble_settings[Settings.SCRIBBLE_SETTINGS.COLOR]
 	self.anti_a = Settings.scribble_settings[Settings.SCRIBBLE_SETTINGS.ANITIALIASING]
@@ -118,4 +119,7 @@ class Stroke:
 		var top_left = Vector2(min_x,min_y)
 		var size = Vector2(max_x-min_x,max_y-min_y)
 		return Rect2(top_left,size)
+	func draw(canvas:CanvasItem):
+		for point in self.mouse_points:
+			canvas.draw_polyline(self.mouse_points,self.color,self.width,self.anti_a)
 	

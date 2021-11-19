@@ -3,7 +3,9 @@ extends Sprite
 
 #enum CURSOR_SETTINGS {SHOW_CURSOR_FILL, CURSOR_FILL_COLOR, CURSOR_FILL_ALPHA,
 #					   SHOW_CURSOR_BORD, CURSOR_BORD_COLOR, CURSOR_BORD_ALPHA, CURSOR_BORDER_WIDTH}
+enum CURSOR_MODES {CIRCLE, RECTANGE}
 
+const DEFAULT_CURSOR_MODE = CURSOR_MODES.CIRCLE
 const DEFAULT_CURSOR_SIZE = 10
 const DEFAULT_CURSOR_SIZE_SMALL = 5
 
@@ -16,6 +18,12 @@ const DEFAULT_CURSOR_BORD_COLOR = Color.darkslateblue
 const DEFAULT_CURSOR_BORD_ALPHA = 0.8
 const DEFAULT_CURSOR_BORD_WIDTH = 1.0
 
+var draw_funcs ={
+	CURSOR_MODES.CIRCLE:funcref(self,"_circle_cursor_draw"),
+	CURSOR_MODES.RECTANGE:funcref(self,"_rect_cursor_draw")
+}
+
+var cursor_mode
 var radius 
 var small_size
 var large_size
@@ -27,7 +35,9 @@ var border_width
 
 onready var tween = $Tween
 func _ready():
-	self._on_settings_updated()
+	self._on_settings_changed()
+	Settings.connect("cursor_settings_changed",self,"_on_settings_changed")
+	Settings.connect("cursor_mode_changed",self,"_on_mode_changed")
 
 func _input(event):
 	if event.is_action_pressed("draw"):
@@ -43,12 +53,28 @@ func _process(_delta):
 	self.update()
 
 func _draw():
+#	print(self.cursor_mode)
+	self.draw_funcs[self.cursor_mode].call_func()
+
+
+func _circle_cursor_draw():
 	if self.show_border:
 		self.draw_arc(get_global_mouse_position(),self.radius,0,2*PI,50,self.border_color,self.border_width,true)
 	if self.show_fill:
 		self.draw_circle(get_global_mouse_position(),self.radius,self.fill_color)
 
-func _on_settings_updated():
+
+func _rect_cursor_draw():
+	var rect = Rect2(get_global_mouse_position()-self.radius*Vector2(1,1),2*self.radius*Vector2(1,1))
+	if self.show_border:
+		self.draw_rect(rect,self.border_color,self.border_width,true)
+	if self.show_fill:
+		self.draw_rect(rect,self.fill_color,self.border_width,true)
+
+
+
+func _on_settings_changed():
+	cursor_mode = Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_MODE]
 	radius = Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_SIZE]
 	large_size = Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_SIZE]
 	small_size = Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_SIZE_SMALL]
@@ -57,3 +83,6 @@ func _on_settings_updated():
 	show_border = Settings.cursor_settings[Settings.CURSOR_SETTINGS.SHOW_CURSOR_BORD]
 	border_color = Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_BORD_COLOR] * Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_BORD_ALPHA]
 	border_width = Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_BORD_WIDTH]
+
+func _on_mode_changed():
+	self.cursor_mode = Settings.cursor_settings[Settings.CURSOR_SETTINGS.CURSOR_MODE]

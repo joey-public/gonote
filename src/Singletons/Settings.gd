@@ -1,8 +1,16 @@
 extends Node
 
+signal change_scribble_settings
+signal change_cursor_settings
+signal change_cursor_mode
+
+signal scribble_settings_changed
+signal cursor_settings_changed
+signal cursor_mode_changed
+
 enum SCRIBBLE_SETTINGS {WIDTH,COLOR,ANITIALIASING,TEXTURE,
 			SHOW_TRAIL,TRAIL_WIDTH,TRAIL_COLOR,TRAIL_ANTIALIASING,TRAIL_TEXTURE}
-enum CURSOR_SETTINGS {CURSOR_SIZE, CURSOR_SIZE_SMALL, SHOW_CURSOR_FILL, CURSOR_FILL_COLOR, CURSOR_FILL_ALPHA,
+enum CURSOR_SETTINGS {CURSOR_MODE, CURSOR_SIZE, CURSOR_SIZE_SMALL, SHOW_CURSOR_FILL, CURSOR_FILL_COLOR, CURSOR_FILL_ALPHA,
 					   SHOW_CURSOR_BORD, CURSOR_BORD_COLOR, CURSOR_BORD_ALPHA, CURSOR_BORD_WIDTH}
 
 
@@ -19,6 +27,7 @@ var scribble_settings:Dictionary = {
 }
 
 var cursor_settings:Dictionary = {
+	CURSOR_SETTINGS.CURSOR_MODE: Cursor.DEFAULT_CURSOR_MODE,
 	CURSOR_SETTINGS.CURSOR_SIZE: Cursor.DEFAULT_CURSOR_SIZE,
 	CURSOR_SETTINGS.CURSOR_SIZE_SMALL: Cursor.DEFAULT_CURSOR_SIZE_SMALL,
 	CURSOR_SETTINGS.SHOW_CURSOR_FILL: Cursor.DEFAULT_SHOW_CURSOR_FILL,
@@ -30,3 +39,25 @@ var cursor_settings:Dictionary = {
 	CURSOR_SETTINGS.CURSOR_BORD_WIDTH:Cursor.DEFAULT_CURSOR_BORD_WIDTH,
 }
 
+
+func _ready():
+	self.connect("change_scribble_settings",self,"_on_change_scribble_settings")
+	self.connect("change_cursor_settings",self,"_on_change_cursor_settings")
+	self.connect("change_cursor_mode",self,"_on_change_cursor_mode")
+
+
+
+
+func _on_change_scribble_settings(new:Dictionary):
+	self.scribble_settings = new
+	emit_signal("scribble_settings_chaged")
+
+
+func _on_change_cursor_settings(new:Dictionary):
+	self.cursor_settings = new
+	emit_signal("change_cursor_settings")
+
+
+func _on_change_cursor_mode(new:int):
+	self.cursor_settings[CURSOR_SETTINGS.CURSOR_MODE] = new
+	emit_signal("cursor_mode_changed")

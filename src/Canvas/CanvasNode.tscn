@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://src/Canvas/Grid/Grid.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/Canvas/CanvasNode.gd" type="Script" id=2]
@@ -6,12 +6,22 @@
 [ext_resource path="res://src/Canvas/Page/Camera2D.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/UI/Label.gd" type="Script" id=5]
 [ext_resource path="res://src/UI/PopupMenu/PopupMenue.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/Drawing/Scribble/DrawScribble/DrawScribble.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/Drawing/Scribble/EraseScribble/EraserScribble.tscn" type="PackedScene" id=8]
+[ext_resource path="res://src/Drawing/Pen/Pens.gd" type="Script" id=9]
 
 [node name="CanvasNode" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Grid" parent="." instance=ExtResource( 1 )]
 visible = false
+
+[node name="Pens" type="Node2D" parent="."]
+script = ExtResource( 9 )
+
+[node name="DrawScribble" parent="Pens" instance=ExtResource( 7 )]
+
+[node name="EraserScribble" parent="Pens" instance=ExtResource( 8 )]
 
 [node name="Page" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
