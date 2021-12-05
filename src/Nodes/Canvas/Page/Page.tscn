@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/Nodes/Grids/Grid.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Nodes/Canvas/Page/Sprite2.gd" type="Script" id=3]
+[ext_resource path="res://src/Nodes/Canvas/Page/Page.gd" type="Script" id=5]
+
+[node name="Page" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite2" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+mouse_default_cursor_shape = 3
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Grid2" parent="Sprite2" instance=ExtResource( 2 )]
+grid_size = 12
+fixed_canvans = true
+canvas_dim = Vector2( 595, 842 )
+dot_grid_settings = {
+"dot_alpha": 0.5,
+"dot_color": Color( 0.75, 0.75, 0.75, 1 ),
+"dot_size": 1.5
+}
+line_grid_settings = {
+"line_alpha": 0.1,
+"line_color": Color( 0, 0, 0, 1 ),
+"line_width": 0.5
+}
+eng_grid_settings = {
+"inner_line_alpha": 1.0,
+"inner_line_color": Color( 0.75, 0.75, 0.75, 1 ),
+"inner_line_width": 1.0,
+"outer_line_alpha": 1.0,
+"outer_line_color": Color( 0.66, 0.66, 0.66, 1 ),
+"outer_line_width": 2.0
+}

@@ -9,38 +9,62 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
+"base": "Reference",
 "class": "Canvas",
 "language": "GDScript",
-"path": "res://src/Canvas/CanvasNode.gd"
+"path": "res://src/Nodes/Canvas/CanvasNode.gd"
 }, {
 "base": "Sprite",
 "class": "Cursor",
 "language": "GDScript",
-"path": "res://src/Drawing/Scribble/TextureSprite.gd"
+"path": "res://src/Nodes/Cursor/Cursor.gd"
+}, {
+"base": "Pen",
+"class": "HandwritingPen",
+"language": "GDScript",
+"path": "res://src/Nodes/Pens/Pen/HandwritingPen/HandwritingPen.gd"
+}, {
+"base": "Node2D",
+"class": "Pen",
+"language": "GDScript",
+"path": "res://src/Nodes/Pens/Pen/Pen.gd"
+}, {
+"base": "Node2D",
+"class": "Scribble",
+"language": "GDScript",
+"path": "res://src/Drawing/Scribble/Scribbles.gd"
 }, {
 "base": "Node2D",
 "class": "Scribbles",
 "language": "GDScript",
-"path": "res://src/Drawing/Scribble/Scribbles.gd"
+"path": "res://src/Legacy/Scribble/Scribbles.gd"
+}, {
+"base": "Resource",
+"class": "Stroke",
+"language": "GDScript",
+"path": "res://src/Resources/Stroke.gd"
 } ]
 _global_script_class_icons={
 "Canvas": "",
 "Cursor": "",
-"Scribbles": ""
+"HandwritingPen": "",
+"Pen": "",
+"Scribble": "",
+"Scribbles": "",
+"Stroke": ""
 }
 
 [application]
 
 config/name="HandNote"
-run/main_scene="res://src/Canvas/CanvasNode.tscn"
+run/main_scene="res://src/Nodes/Canvas/CanvasNode.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Globals="*res://src/Singletons/globals.gd"
-SignalManager="*res://src/Singletons/SignalManager.tscn"
-Settings="*res://src/Singletons/Settings.gd"
+Globals="*res://src/Nodes/Singletons/globals.gd"
+SignalManager="*res://src/Nodes/Singletons/SignalManager.tscn"
+Settings="*res://src/Nodes/Singletons/Settings.gd"
 
 [display]
 

@@ -1,4 +1,4 @@
-extends Scribble
+extends Scribbles
 
 enum DRAW_MODES {POLYLINE,POLYLINE_XFORM,TEXTURE,MULTILINE,LINE,CIRCLE,RECT}
 var drawfuncs:Dictionary = {
@@ -62,7 +62,7 @@ func scribble(_delta):
 		self.trail.add_point(pos)
 		self.update()
 	elif Input.is_action_just_released("draw"):
-		Globals.draw_stack.push_back(Scribbles.Stroke.new(self))
+		Globals.draw_stack.push_back(Stroke.new(self))
 #		Globals.emit_signal("redraw_stack")
 		self.scribble_points.resize(0)
 	else:

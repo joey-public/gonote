@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/Nodes/Pens/Pen/Pen.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/Nodes/Pens/Pen/HandwritingPen/HandwritingPen.gd" type="Script" id=2]
+
+[node name="HandwritingPen" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="trail" type="Line2D" parent="." index="0"]
+width = 4.0
+default_color = Color( 0.980392, 1, 0.4, 0.439216 )
+
+[node name="Strokes" type="Node" parent="." index="1"]

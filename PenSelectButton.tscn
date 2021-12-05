@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://src/UI/PopupMenu/PenMenue.gd" type="Script" id=1]
+[ext_resource path="res://src/Nodes/UI/PopupMenu/PenMenue.gd" type="Script" id=1]
 [ext_resource path="res://assets/GeneratedTextures/circle_bigger.png" type="Texture" id=2]
 [ext_resource path="res://assets/GeneratedTextures/circle.png" type="Texture" id=3]
 

@@ -1,4 +1,4 @@
-class_name Scribble
+class_name Scribbles
 extends Node2D
 
 const DEFAULT_WIDTH:float = 1.0
@@ -135,7 +135,3 @@ func _on_settings_changed()->void:
 #			canvas.draw_circle(self.point_xform.xform(self.mouse_points[0]),self.draw_width/2,self.color)			
 #			canvas.draw_polyline(self.point_xform.xform(self.mouse_points),self.color,self.draw_width,self.anti_a)
 #			canvas.draw_circle(self.point_xform.xform(self.mouse_points[-1]),self.draw_width/2,self.color)			
-#
-			
-			
-	
