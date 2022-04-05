@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Reference",
+"base": "Node2D",
 "class": "Canvas",
 "language": "GDScript",
 "path": "res://src/Nodes/Canvas/CanvasNode.gd"
@@ -32,17 +32,12 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Scribble",
 "language": "GDScript",
-"path": "res://src/Drawing/Scribble/Scribbles.gd"
+"path": "res://src/Legacy/Drawing/Scribble/Scribbles.gd"
 }, {
 "base": "Node2D",
 "class": "Scribbles",
 "language": "GDScript",
 "path": "res://src/Legacy/Scribble/Scribbles.gd"
-}, {
-"base": "Resource",
-"class": "Stroke",
-"language": "GDScript",
-"path": "res://src/Resources/Stroke.gd"
 } ]
 _global_script_class_icons={
 "Canvas": "",
@@ -50,8 +45,7 @@ _global_script_class_icons={
 "HandwritingPen": "",
 "Pen": "",
 "Scribble": "",
-"Scribbles": "",
-"Stroke": ""
+"Scribbles": ""
 }
 
 [application]
